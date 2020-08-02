@@ -4,11 +4,8 @@
 #Otto Alexander Trujillo Contreras - 17189
 #Laboratorio 2
 
-
-
 #Importacion de librerias
 from bitarray import bitarray
-
 
 SentMessage = bitarray()
 
@@ -17,9 +14,9 @@ SentMessage = bitarray()
 #Todo junto
 #01001000011011110110110001100001
 
-#parte 1 
-
-MessageA = input("Ingrese un texto a enviar")
+#parte 1
+negacion = 0
+MessageA = input("Ingrese un texto a enviar: ")
 try:
     valor = str(MessageA)
 except ValueError:
@@ -36,7 +33,7 @@ while negacion == 1:
         negacion = 1
         pass
 
-MessageABinary = bitarray(MessageA)
+#MessageABinary = bitarray(MessageA)
 
-print(MessageABinary)
-print("HOLAA")
+#print(MessageABinary)
+print(MessageA)
