@@ -13,7 +13,7 @@ import socket
 #Todo junto
 #01001000011011110110110001100001
 
-
+'''
 #Conexion
 HOST = '127.0.0.1'  # The server's hostname or IP address
 PORT =  4000        # The port used by the server
@@ -25,7 +25,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
 print('Received', repr(data))
 
-
+'''
 
 
 #parte 1
@@ -33,10 +33,17 @@ def strToBinary(s):
     st = s
     return(' '.join(format(x, 'b') for x in bytearray(st, 'utf-8')))
 
+final_message = []
 key = True
 while key == True:
     MessageA = str(input("Ingrese un texto a enviar: "))
     MessageA = strToBinary(MessageA)
+    for a in MessageA:
+        if a == ' ':
+            pass
+        else:
+            final_message.append(int(a))
+    MessageA = bitarray(final_message)
     key = False
     try:
         valor = str(MessageA)
