@@ -20,6 +20,21 @@ SentMessage = bitarray()
 #parte 1 
 
 MessageA = input("Ingrese un texto a enviar")
+try:
+    valor = str(MessageA)
+except ValueError:
+    print('Mensaje invalido')
+    negacion = 1
+    pass
+while negacion == 1:
+    MessageA = input("Ingrese un texto a enviar")
+    negacion = 2
+    try:
+        valor = str(MessageA)
+    except ValueError:
+        print('Mensaje invalido')
+        negacion = 1
+        pass
 
 MessageABinary = bitarray(MessageA)
 
