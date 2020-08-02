@@ -26,14 +26,21 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 print('Received', repr(data))
 
 #parte 1
+def strToBinary(s):
+    st = s
+    return(' '.join(format(x, 'b') for x in bytearray(st, 'utf-8')))
 
+key = True
+while key == True:
+    MessageA = str(input("Ingrese un texto a enviar: "))
+    MessageA = strToBinary(MessageA)
+    key = False
+    try:
+        valor = str(MessageA)
+    except:
+        print('Mensaje Invalido')
+        key = True
+        pass
 
-#while True:
-#    MessageA = input("Ingrese un texto a enviar: \n")
-#    try:
-#        valor = str(MessageA)
-#
-#    except:
-#        print('Mensaje invalido')
-#        pass
-#
+print(MessageA)
+
