@@ -25,6 +25,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
 print('Received', repr(data))
 
+
+
+
 #parte 1
 def strToBinary(s):
     st = s
