@@ -26,7 +26,22 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 print('Received', repr(data))
 
 '''
+#parte 2
+def hamming(mensaje):
+	mensaje = list(mensaje)
 
+	x = posicion = 0	
+	while posicion < len(mensaje):
+		posicion = 2 ** x
+		# insertamos el valor de paridad
+		if posicion < len(mensaje):
+			mensaje.insert(posicion-1, "*")
+		else:
+			break
+		x += 1
+
+	cadena = "".join(cadena)
+	return cadena
 
 #parte 1
 def strToBinary(s):
