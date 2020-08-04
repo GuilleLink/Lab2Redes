@@ -33,11 +33,23 @@ def strToBinary(s):
     st = s
     return(' '.join(format(x, 'b') for x in bytearray(st, 'utf-8')))
 
+def countTotalBits(num):
+    TotalNumberBits = 0
+    TotalBinary = []
+    for a in num:
+        if a == ' ':
+            pass
+        else:
+            binary = bin(int(a))[2:]
+            TotalNumberBits = TotalNumberBits + len(binary)
+    print('Numero total de bits: ', TotalNumberBits)
+     
 final_message = []
 key = True
 while key == True:
     MessageA = str(input("Ingrese un texto a enviar: "))
     MessageA = strToBinary(MessageA)
+    BinaryNumber = MessageA
     for a in MessageA:
         if a == ' ':
             pass
@@ -52,5 +64,6 @@ while key == True:
         key = True
         pass
 
+countTotalBits(BinaryNumber)
 print(MessageA)
 
