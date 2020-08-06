@@ -6,27 +6,50 @@
 
 #Importacion de librerias
 from bitarray import bitarray
+import matplotlib.pyplot as plt 
+import random
 import socket
+import pickle
 
-#Hola en ASCII es:
-#0100 1000    0110 1111    0110 1100    0110 0001
-#Todo junto
-#01001000011011110110110001100001
+#Para las gráficas
+DetList = []
+CorList = []
+ErrList = []
+msgSize = []
 
-'''
-#Conexion
-HOST = '127.0.0.1'  # The server's hostname or IP address
-PORT =  4000        # The port used by the server
+def graficar(lista1, lista2, lista1T, lista2T, titulo):
+    plt.plot(lista1, lista2)
+    plt.xlabel(lista1T)
+    plt.ylabel(lista2T)
+    plt.title(titulo)
+    plt.show()
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.connect((HOST, PORT))
-    s.sendall(b'Hello, world')
-    data = s.recv(1024)
+#Recibe el mensaje y la cantidad de errores a introducir
+def  insertErrorMessage(mensaje, Errors):
+    for bit in len(mensaje):
+        if (Errors > 0):
+            randomBitChanged = random.randint(0, 2)
+            #Si es 1 cambia el bit si todavia hay bits por cambiar
+            if (randomBitChanged == 1):
+                if (bit == 0):
+                    bit = 1
+                elif (bit == 1):
+                    bit = 0
+            else:
+                pass
+        else:
+            break
 
-print('Received', repr(data))
+    return mensaje
 
-'''
-#parte 1 - STRING -> BINARY -> BITARRAY // Buscar ruido 
+def strToBinary2(msg):
+    msgB = bin(int.from_bytes(msg.encode(), 'big'))
+    msgB = msgB.replace("b","")
+    msgB = bitarray(msgB)
+    msgB = pickle.dumps(msgB)
+    return msgB
+
+
 def strToBinary(s):
     st = s
     return(' '.join(format(x, 'b') for x in bytearray(st, 'utf-8')))
@@ -43,6 +66,22 @@ def countTotalBits(num):
     return TotalNumberBits
 
 #parte 2 - Algoritmo de deteccion y correcion
+#Algoritmo de Fletcher Sumcheck
+
+
+def FletcherSumCheck(mensajeB):
+
+    sumabin = int("0b00000000", 2)
+
+    for letra in mensajeB:
+        binarioActual = int(letra, 2)
+        integer_sum = int(sumabin, 2) + int(binarioActual, 2)
+        sumabin = bin(integer_sum)
+
+    print(sumabin)
+    print(~sumabin)
+
+
 #Algoritmo de Hamming
 def Calcular_Reduccion_Bits(m):
     for i in range(m):
@@ -84,6 +123,73 @@ def Detectar_Error(arr, nr):
         res = res + val*(10**i)
     return int(str(res), 2) 
 
+
+#-----------------------------------------------------
+
+'''
+#Conexion
+HOST = '127.0.0.1'  # The server's hostname or IP address
+PORT =  4000        # The port used by the server
+
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    s.connect((HOST, PORT))
+    s.sendall(b'Hello, world')
+    data = s.recv(1024)
+
+print('Received', repr(data))
+
+'''
+#parte 1 - STRING -> BINARY -> BITARRAY // Buscar ruido 
+#Conexion y envio de mensaje entre sockets (corregido/no server)
+HOST = '127.0.0.1'  # The server's hostname or IP address
+PORT =  4000        # The port used by the server
+
+cont = True
+
+while cont == True:
+    print('Seleccione una opcion \n')
+    print('1. Enviar mensaje')
+    print('2. Hacer graficos')
+    print('3. salir')
+    try:
+        opt = input()
+        opt = int(opt)
+    except:
+        print('No escribio un numero')
+    if(opt == 1):
+        mensaje = str(input("Ingrese su mensaje: \n"))
+        try:
+            #noise = int(input('Ingrese cuanto ruido desea ingresar en numeros \n'))
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.bind(('', PORT))
+                s.listen()
+                conn, addr = s.accept()
+                mensajeB = strToBinary2(mensaje)
+                #mensajeE = insertErrorMessage(mensajeB, noise)
+
+                conn.send(mensajeB)
+                print('Message Sent')
+                conn.close()
+
+        except:
+            #print(noise)
+            print('Ha cometido un error, el ruido solo puede ser numeros')
+
+    elif(opt == 2):
+        graficar(msgSize, ErrList, 'Size Message', 'Errors included', 'Message/Errors')
+        graficar(ErrList, DetList, 'Errores', 'Errores detectados', 'Errors/Detected')
+        graficar(ErrList, CorList, 'Errores', 'Errores corregidos', 'Errors/Corrected')
+
+    elif(opt == 3):
+        cont = False
+        break
+
+    else:
+        print('No escribio una opcion valida')
+
+
+
+
 # Parte Final - Poner todo a funcionar  
 final_message = []
 BinaryNumberString = ''
@@ -123,4 +229,7 @@ arr = Calcular_Paridad_Bits(arr, r)
 print("La Data transferida es " + arr, '\n')
 correction = Detectar_Error(arr, r) 
 print("La posicion del error es " + str(correction))
+
+
+
 
