@@ -149,8 +149,8 @@ cont = True
 while cont == True:
     print('Seleccione una opcion \n')
     print('1. Enviar mensaje')
-    print('2. Hacer graficos')
-    print('3. salir')
+    #print('2. Hacer graficos')
+    print('2. salir')
     try:
         opt = input()
         opt = int(opt)
@@ -169,18 +169,20 @@ while cont == True:
 
                 conn.send(mensajeB)
                 print('Message Sent')
+                msgSize.append(len(mensaje))
+                ErrList.append(noise)
                 conn.close()
 
         except:
             #print(noise)
             print('Ha cometido un error, el ruido solo puede ser numeros')
 
+    #elif(opt == 2):
+    #    graficar(msgSize, ErrList, 'Size Message', 'Errors included', 'Message/Errors')
+    #    graficar(ErrList, DetList, 'Errores', 'Errores detectados', 'Errors/Detected')
+    #    graficar(ErrList, CorList, 'Errores', 'Errores corregidos', 'Errors/Corrected')
+#
     elif(opt == 2):
-        graficar(msgSize, ErrList, 'Size Message', 'Errors included', 'Message/Errors')
-        graficar(ErrList, DetList, 'Errores', 'Errores detectados', 'Errors/Detected')
-        graficar(ErrList, CorList, 'Errores', 'Errores corregidos', 'Errors/Corrected')
-
-    elif(opt == 3):
         cont = False
         break
 

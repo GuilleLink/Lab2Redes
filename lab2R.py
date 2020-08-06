@@ -30,24 +30,22 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     while msg:
         mensaje = pickle.loads(msg)
         print(mensaje) 
-        msg = s.recv(1024) 
+        msg = s.recv(1024)
         
+    st = mensaje.to01()
+
     # initializing a empty string for  
     # storing the string data 
     str_data =' '
-    print(len(mensaje))
     # slicing the input and converting it  
     # in decimal and then converting it in string 
-    for i in range(0, len(mensaje), 7): 
-        
+    for i in range(0, len(st), 7): 
         # slicing the bin_data from index range [0, 6] 
         # and storing it as integer in temp_data 
-        temp_data = int(mensaje[i:i + 7]) 
-        
+        temp_data = int(st[i:i + 7]) 
         # passing temp_data in BinarytoDecimal() fuction 
         # to get decimal value of corresponding temp_data 
         decimal_data = BinaryToDecimal(temp_data) 
-        
         # Deccoding the decimal value returned by  
         # BinarytoDecimal() function, using chr()  
         # function which return the string corresponding  
